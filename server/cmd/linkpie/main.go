@@ -1,19 +1,23 @@
 package main
 
 import (
-	"fmt"
+	"log"
 	"net/http"
+
+	"github.com/iamneek/linkpie/internal/router"
 )
 
 func main() {
-	mux := http.NewServeMux()
+	mux := router.New()
 
-	mux.HandleFunc("GET /", func(w http.ResponseWriter, r *http.Request) {
-		w.Write([]byte("Home"))
-	})
+	server := &http.Server{
+		Addr:    ":5000",
+		Handler: mux,
+	}
 
-	fmt.Println("Starting server: http://localhost:5000")
-	if err := http.ListenAndServe(":5000", mux); err != nil {
-		fmt.Println("Error starting server")
+	log.Println("Starting server on :5000")
+
+	if err := server.ListenAndServe(); err != nil {
+		log.Fatalf("Server failed to start: %v", err)
 	}
 }
