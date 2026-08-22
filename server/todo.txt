@@ -1,3 +1,4 @@
 emojis?
 alias?
 basic analytics?
+github login?
