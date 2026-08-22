@@ -1,14 +1,14 @@
-version: '3.8'
 services:
   dynamodb-local:
     command: "-jar DynamoDBLocal.jar -sharedDb -dbPath ./data"
     image: "amazon/dynamodb-local:latest"
     container_name: dynamodb-local
+    user: root
     ports:
       - "8000:8000"
-    restart: always
+    restart: unless-stopped
     volumes:
-      - "./data:/home/dynamodblocal/data"
+      - dynamodb_data:/home/dynamodblocal/data
     working_dir: /home/dynamodblocal
 
   dynamodb:
@@ -22,3 +22,7 @@ services:
     environment:
       - DYNAMO_ENDPOINT=http://dynamodb-local:8000
       - AWS_REGION=ap-southeast-1
+
+
+volumes:
+  dynamodb_data:
